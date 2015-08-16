@@ -215,7 +215,7 @@ info "About to install the ULHPC dotfiles from ${DOTFILES}"
 
 [[ -z "${OFFLINE}" && -d "${DOTFILES}" ]]   && execute "( cd $DOTFILES ; git pull )"
 [[ ! -d "${DOTFILES}" ]] && execute "git clone "${GIT_URL}" ${DOTFILES}"
-execute "git checkout ${GIT_BRANCH}"
+execute "cd ${DOTFILES} ; git checkout ${GIT_BRANCH}"
 
 cd ~
 
