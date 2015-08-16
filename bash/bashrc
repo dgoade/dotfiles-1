@@ -281,24 +281,8 @@ HISTFILESIZE=20000
 HISTTIMEFORMAT="[%d/%m/%Y %H:%M:%S] "
 
 # ----------------------------------------------------------------------
-# VERSION CONTROL SYSTEM - CVS, SVN and GIT
+# VERSION CONTROL SYSTEM - GIT
 # ----------------------------------------------------------------------
-# === CVS ===
-export CVS_RSH='ssh'
-
-# === SVN ===
-export SVN_EDITOR=$EDITOR
-
-
-## display the current subversion revision (to be used later in the prompt)
-__svn_ps1() {
-  local svnversion=`svnversion | sed -e "s/[:M]//g"`
-  # Continue if $svnversion is numerical
-  if let $svnversion 2>/dev/null
-  then
-      printf " (svn:%s)" `svnversion`
-  fi
-}
 
 # fix error with __git_ps1 in screen
 if [[ -f /etc/bash_completion.d/git ]] ; then
@@ -393,20 +377,18 @@ __set_compact_prompt() {
 ###########
 # my prompt; the format is as follows:
 #
-#    [hh:mm:ss]:$?:username@hostname(domain[,xentype][,extrainfo])[OAR job info] workingdir(svn/git status) $>
+#    [hh:mm:ss]:$?:username@hostname(domain[,xentype][,extrainfo])[OAR job info] workingdir(git status) $>
 #    `--------'  ^  `------' `------'                                            `--------'`--------------'
 #       cyan     |  root:red   cyan                                                light        green
 #                |           underline                                             blue  (absent if not relevant)
 #           exit code of
 #        the previous command
 #
-# The git/svn status part is quite interesting: if you are in a directory under
+# The git status part is quite interesting: if you are in a directory under
 # version control, you have the following information in the prompt:
 #   - under GIT: current branch name, followed by a '*' if the repository has
 #                uncommitted changes, followed by a '+' if some elements were
 #                'git add'ed but not commited.
-#   - under SVN: show (svn:XX[M]) where XX is the current revision number,
-#                followed by 'M' if the repository has uncommitted changes
 #
 # `domain` reflect the current domain of the machine that run the prompt
 # (guessed from hostname -f)
@@ -417,7 +399,7 @@ __set_compact_prompt() {
 # This prompt is perfect for terminal with black background, in my case the
 # Vizor color set (see http://visor.binaryage.com/) or iTerm2
 __set_my_prompt() {
-  PS1="$(__colorized_exit_status) ${LIGHT_CYAN}\t${RESET_COLOR} ${COLOR_USER}\u${RESET_COLOR}@${CYAN_UNDERLINE}\h${RESET_COLOR}(${PS1_EXTRAINFO})${RED}\$(__oar_ps1_remaining_time)${RESET_COLOR}${GREEN}\$(__git_ps1 \" (%s)\")\$(__svn_ps1)${RESET_COLOR} ${BLUE}\W${RESET_COLOR} ${P} "
+  PS1="$(__colorized_exit_status) ${LIGHT_CYAN}\t${RESET_COLOR} ${COLOR_USER}\u${RESET_COLOR}@${CYAN_UNDERLINE}\h${RESET_COLOR}(${PS1_EXTRAINFO})${RED}\$(__oar_ps1_remaining_time)${RESET_COLOR}${GREEN}\$(__git_ps1 \" (%s)\")${RESET_COLOR} ${BLUE}\W${RESET_COLOR} ${P} "
 }
 
 # -------------------------------------------------------------------
