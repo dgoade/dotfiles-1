@@ -22,6 +22,8 @@ SIMULATION=""
 OFFLINE=""
 MODE=""
 FORCE=""
+GIT_URL="https://github.com/dgoade/dotfiles-1.git"
+GIT_BRANCH="fe"
 
 ### displayed colors
 COLOR_GREEN="\033[0;32m"
@@ -109,7 +111,7 @@ AUTHOR
 
 REPORTING BUGS
     Please report bugs using the Issue Tracker of the project:
-       <https://github.com/ULHPC/dotfiles/issues>
+       <https://github.com/dgoade/dotfiles-1.git/issues>
 
 COPYRIGHT
     This is free software; see the source for copying conditions.  There is
@@ -212,14 +214,15 @@ info "About to install the ULHPC dotfiles from ${DOTFILES}"
 [ -z "${FORCE}" ] && really_continue
 
 [[ -z "${OFFLINE}" && -d "${DOTFILES}" ]]   && execute "( cd $DOTFILES ; git pull )"
-[[ ! -d "${DOTFILES}" ]] && execute "git clone https://github.com/ULHPC/dotfiles.git ${DOTFILES}"
+[[ ! -d "${DOTFILES}" ]] && execute "git clone "${GIT_URL}" ${DOTFILES}"
+execute "git checkout ${GIT_BRANCH}"
 
 cd ~
 
 ## ssh
-
-execute "mkdir -p ~/.ssh"
-add_or_remove_link ${DOTFILES}/ssh/config ~/.ssh/config
+## dcg -- puppet will handle this for us
+#execute "mkdir -p ~/.ssh"
+#add_or_remove_link ${DOTFILES}/ssh/config ~/.ssh/config
 
 ## bash
 add_or_remove_link $DOTFILES/bash/bashrc       ~/.bashrc
